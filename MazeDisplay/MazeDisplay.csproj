@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MazeCell.cs" />
     <Compile Include="MazeDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,6 +54,7 @@
       <DependentUpon>MazeDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="MazeDrawer.cs" />
+    <Compile Include="MazeSolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MazeDisplay.resx">

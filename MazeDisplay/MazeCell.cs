@@ -1,0 +1,99 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MazeDisplay
+{
+    internal class MazeCell
+    {
+        //Index used to create cell
+        int i, j;
+        //top left
+        float x, y;
+        float width, height;
+        bool blocked = false;
+        bool filled = false;
+        public MazeCell(int i, int j, float x, float y, float width, float height)
+        {
+            this.i = i;
+            this.j = j;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        }
+        public int I
+        {
+            get { return i; }
+        }
+        public int J
+        {
+            get { return j; }
+        }
+        public bool Filled
+        {
+            set { filled = value; }
+        }
+        public bool Blocked
+        {
+            set { blocked = value; }
+        }
+        public void Draw(Graphics g)
+        {
+            if (blocked)
+            {
+                g.FillRectangle(Brushes.Black, new RectangleF(new PointF(x, y), new SizeF(width, height)));
+            }
+            if(filled)
+            {
+                g.FillRectangle(Brushes.Red, new RectangleF(new PointF(x, y), new SizeF(width, height)));
+            }
+
+            //top
+            g.DrawLine(Pens.Blue, new PointF(x, y), new PointF(x + width, y));
+            //left
+            g.DrawLine(Pens.Blue, new PointF(x, y), new PointF(x, y + height));
+            //right
+            g.DrawLine(Pens.Blue, new PointF(x + width, y), new PointF(x + width, y + height));
+            //bottom
+            g.DrawLine(Pens.Blue, new PointF(x, y + height), new PointF(x + width, y + height));
+        }
+        public bool Intersect(int mouseX, int mouseY)
+        {
+            bool bret = x <= mouseX
+                && mouseX <= x + width
+                && y <= mouseY
+                && mouseY <= y + height;
+            Console.WriteLine(x.ToString() + "," + y.ToString() + ","
+                + (x + width).ToString() + "," + (y + height).ToString() + " " + bret);
+
+            return x <= mouseX 
+                && mouseX <= x + width 
+                && y <= mouseY 
+                && mouseY <= y + height;
+        }
+
+        public bool Click(int mouseX, int mouseY)
+        {
+            if (Intersect(mouseX, mouseY))
+            {
+                Console.WriteLine("Flipping blocked state");
+                blocked = !blocked;
+                if(filled)
+                {
+                    if(blocked)
+                    {
+                        filled = false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+    }
+}
