@@ -298,7 +298,6 @@ namespace DepthFirstSolve
                 {
                     for (int j = 0; j < maze[i].Length; ++j)
                     {
-                        //todo: fix this
                         string val = maze[i][j].ToString();
                         if (path.Contains(t.PointToInt(new Point(i, j))))
                         {

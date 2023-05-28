@@ -58,7 +58,6 @@ namespace BreadthFirstSolve
             {
                 for (int j = 0; j < maze[i].Length; ++j)
                 {
-                    //todo: fix this
                     string val = maze[i][j].ToString();
                     if (seen.Contains(PointToInt(new Point(i, j), maze.Length)))
                     {

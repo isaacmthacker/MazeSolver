@@ -41,7 +41,6 @@ namespace MazeDisplay
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "MazeDisplay";
             this.Text = "MazeDisplay";
-            this.Load += new System.EventHandler(this.MazeDisplay_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MazeDisplay_DrawMaze);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MazeDisplay_Click);
 

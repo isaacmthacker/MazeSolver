@@ -13,8 +13,6 @@ namespace MazeDisplay
     public partial class MazeDisplay : Form
     {
         private MazeDrawer mazeDrawer = null;
-        private List<int> xs = new List<int>();
-        private List<int> ys = new List<int>();
         public MazeDisplay()
         {
             DoubleBuffered = true;
@@ -24,25 +22,16 @@ namespace MazeDisplay
             Console.WriteLine(ClientSize.Width.ToString() + "," + ClientSize.Height.ToString());
         }
 
-        private void MazeDisplay_Load(object sender, EventArgs e)
-        {
-
-        }
-
         public void MazeDisplay_DrawMaze(object sender, System.Windows.Forms.PaintEventArgs e)
         {
-            Console.WriteLine("Drawing");
             Graphics g = e.Graphics;
-
+            //Background
             g.FillRectangle(Brushes.White, new Rectangle(0, 0, Width, Height));
-
             mazeDrawer.Draw(g);
-
         }
 
         protected override void OnResize(EventArgs e)
         {
-            Console.WriteLine("resize");
             mazeDrawer.Resize(ClientSize.Width, ClientSize.Height);
             Invalidate();
         }
@@ -54,7 +43,6 @@ namespace MazeDisplay
             //Update maze solver
             if(mazeDrawer.MouseLookup(e))
             {
-                Console.WriteLine("Clicked in cell");
                 mazeDrawer.CreateCells();
                 Invalidate();
             }

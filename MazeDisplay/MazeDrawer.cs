@@ -16,7 +16,8 @@ namespace MazeDisplay
         int[][] maze;
         List<MazeCell> cells = new List<MazeCell>();
         MazeSolver mazeSolver = new MazeSolver();
-        public MazeDrawer(int w, int h) {
+        public MazeDrawer(int w, int h)
+        {
 
             //maze = new int[6][];
             //maze[0] = new int[7] { 0, 0, 0, 0, 0, 1, 1 };
@@ -26,7 +27,6 @@ namespace MazeDisplay
             //maze[4] = new int[7] { 1, 1, 0, 1, 0, 0, 0 };
             //maze[5] = new int[7] { 1, 1, 0, 1, 1, 1, 0 };
 
-            //todo: orig DepthFirstSolve works, this code does not 
             maze = new int[34][];
             maze[0] = new int[18] { 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             maze[1] = new int[18] { 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -94,20 +94,16 @@ namespace MazeDisplay
             {
                 for (int j = 0; j < maze[i].Length; ++j)
                 {
-                    //left corner of first box = 0,0
-                    //left corner of last box: Width-(boxWidth
-                    //Flip i and j so arr[0].Length is the width
+                    //Flip i and j so j is width and i is height
                     float y = i * cellHeight + halfCellHeight;
                     float x = j * cellWidth + halfCellWidth;
                     MazeCell m = new MazeCell(i, j, x, y, cellWidth, cellHeight);
                     if (maze[i][j] == 1)
                     {
-                        Console.WriteLine("Blocked " + i.ToString() + "," + j.ToString());
                         m.Blocked = true;
                     }
-                    if(mazeSolver.PointInPath(i, j))
+                    if (mazeSolver.PointInPath(i, j))
                     {
-                        Console.WriteLine("Point in path");
                         m.Filled = true;
                     }
                     cells.Add(m);
@@ -116,23 +112,22 @@ namespace MazeDisplay
         }
         public void Draw(Graphics g)
         {
-            
-            foreach(MazeCell cell in cells)
+            foreach (MazeCell cell in cells)
             {
                 cell.Draw(g);
             }
         }
         public bool MouseLookup(MouseEventArgs e)
         {
-            foreach(MazeCell cell in cells)
+            foreach (MazeCell cell in cells)
             {
-                if(cell.Click(e.X, e.Y))
+                if (cell.Click(e.X, e.Y))
                 {
-                    Console.WriteLine("Clicked: " + cell.I.ToString() + "," + cell.J.ToString());
-                    if(maze[cell.I][cell.J] == 0)
+                    if (maze[cell.I][cell.J] == 0)
                     {
                         maze[cell.I][cell.J] = 1;
-                    } else
+                    }
+                    else
                     {
                         maze[cell.I][cell.J] = 0;
                     }

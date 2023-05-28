@@ -17,6 +17,7 @@ namespace MazeDisplay
         float width, height;
         bool blocked = false;
         bool filled = false;
+        Pen outline = new Pen(Brushes.Black);
         public MazeCell(int i, int j, float x, float y, float width, float height)
         {
             this.i = i;
@@ -44,33 +45,28 @@ namespace MazeDisplay
         }
         public void Draw(Graphics g)
         {
+            Brush fillColor = Brushes.White;
             if (blocked)
             {
-                g.FillRectangle(Brushes.Black, new RectangleF(new PointF(x, y), new SizeF(width, height)));
-            }
-            if(filled)
+                fillColor = Brushes.Black;
+            } else if (filled)
             {
-                g.FillRectangle(Brushes.Red, new RectangleF(new PointF(x, y), new SizeF(width, height)));
+                fillColor = Brushes.Red;
             }
 
+            g.FillRectangle(fillColor, new RectangleF(new PointF(x, y), new SizeF(width, height)));
+
             //top
-            g.DrawLine(Pens.Blue, new PointF(x, y), new PointF(x + width, y));
+            g.DrawLine(outline, new PointF(x, y), new PointF(x + width, y));
             //left
-            g.DrawLine(Pens.Blue, new PointF(x, y), new PointF(x, y + height));
+            g.DrawLine(outline, new PointF(x, y), new PointF(x, y + height));
             //right
-            g.DrawLine(Pens.Blue, new PointF(x + width, y), new PointF(x + width, y + height));
+            g.DrawLine(outline, new PointF(x + width, y), new PointF(x + width, y + height));
             //bottom
-            g.DrawLine(Pens.Blue, new PointF(x, y + height), new PointF(x + width, y + height));
+            g.DrawLine(outline, new PointF(x, y + height), new PointF(x + width, y + height));
         }
         public bool Intersect(int mouseX, int mouseY)
         {
-            bool bret = x <= mouseX
-                && mouseX <= x + width
-                && y <= mouseY
-                && mouseY <= y + height;
-            Console.WriteLine(x.ToString() + "," + y.ToString() + ","
-                + (x + width).ToString() + "," + (y + height).ToString() + " " + bret);
-
             return x <= mouseX 
                 && mouseX <= x + width 
                 && y <= mouseY 
@@ -81,7 +77,6 @@ namespace MazeDisplay
         {
             if (Intersect(mouseX, mouseY))
             {
-                Console.WriteLine("Flipping blocked state");
                 blocked = !blocked;
                 if(filled)
                 {

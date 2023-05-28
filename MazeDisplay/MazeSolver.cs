@@ -29,9 +29,9 @@ namespace MazeDisplay
             public Point p;
             public List<Node> children;
             public Node parent = null;
-            public Node(Point pp)
+            public Node(Point newpoint)
             {
-                p = pp;
+                p = newpoint;
                 children = new List<Node>();
             }
             public override bool Equals(object o)
@@ -43,7 +43,7 @@ namespace MazeDisplay
                 }
                 else
                 {
-                    return (other.p.X == p.X && other.p.Y == p.Y);
+                    return other.p.X == p.X && other.p.Y == p.Y;
                 }
             }
             public override string ToString()
@@ -91,7 +91,7 @@ namespace MazeDisplay
             }
             public Node Add(Point p, Node parent)
             {
-                Node ret = null;
+                Node ret;
                 if (parent == null)
                 {
                     root = new Node(p);
@@ -133,12 +133,12 @@ namespace MazeDisplay
         }
 
         private HashSet<int> lastSolved = new HashSet<int>();
+        private Tree t;
         private int mazeWidth = 0;
         private int mazeHeight = 0;
 
         public MazeSolver()
         {
-
         }
 
         public void PrintMaze(int[][] maze)
@@ -159,10 +159,13 @@ namespace MazeDisplay
         }
         public bool PointInPath(int i, int j)
         {
-            //todo: fix
-            bool ret = lastSolved.Contains(j * mazeWidth + i);
-            Console.WriteLine("Point in path: " + i.ToString() + " " + j.ToString() + " " + ret);
-            return ret;
+            if(t == null)
+            {
+                return false;
+            } else
+            {
+                return lastSolved.Contains(t.PointToInt(new Point(i,j)));
+            }
         }
 
         public void Solve(int[][] maze)
@@ -175,25 +178,17 @@ namespace MazeDisplay
             mazeWidth = maze.Length;
             mazeHeight = maze[0].Length;
 
-            Console.WriteLine("w, h" + "  " + mazeWidth.ToString() + " " + mazeHeight.ToString());
-
             PrintMaze(maze);
 
+            //Next points to check from current point
             List<Point> offsetList = new List<Point> {
                     new Point(-1, 0), new Point(1, 0),
                     new Point(0, -1), new Point(0, 1)
                 };
 
 
-            Node n = new Node(new Point(0, 0));
-            Console.WriteLine(n);
+            t = new Tree(mazeWidth);
 
-            Tree t = new Tree(mazeWidth);
-
-
-            //want to add points into tree
-            //if point in tree, skip
-            //need to keep track of previous point
             Node prev = null;
             Point cur = new Point(0, 0);
             Queue<QueueObject> queue = new Queue<QueueObject>();
@@ -221,7 +216,7 @@ namespace MazeDisplay
                 }
             }
             Console.WriteLine("Done");
-            t.Print();
+            //t.Print();
 
             Point end = new Point(mazeWidth - 1, mazeHeight - 1);
             Console.WriteLine("End " + end.ToString());
@@ -230,6 +225,7 @@ namespace MazeDisplay
                 Console.WriteLine("Solved!");
                 lastSolved = new HashSet<int>();
 
+                //Build up path from end node to root
                 Node iter = t.GetNode(end);
                 lastSolved.Add(t.PointToInt(iter.p));
                 while (iter != t.root)
@@ -248,7 +244,6 @@ namespace MazeDisplay
                 {
                     for (int j = 0; j < maze[i].Length; ++j)
                     {
-                        //todo: fix this
                         string val = maze[i][j].ToString();
                         if (lastSolved.Contains(t.PointToInt(new Point(i, j))))
                         {
@@ -261,6 +256,7 @@ namespace MazeDisplay
             } else
             {
                 Console.WriteLine("NOT solved");
+                lastSolved.Clear();
             }
         }
     }
