@@ -1,10 +1,10 @@
 # MazeSolver
 
-First attempt at writing a code solver
+BreadthFirstSolve: First attempt at solving a maze via Breadth first search
 
-MazeDisplay:
+DepthFirstSolve: Improved on breadth first solve by building a tree and creating a path from the end node to the beginning
 
-Graphically draws a maze
+MazeDisplay: Took DepthFirstSolve code and added a graphical display to draw the maze
 
 Lets you click on cells to block or unblock them and the maze solving will update
 
