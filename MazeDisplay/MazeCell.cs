@@ -15,8 +15,12 @@ namespace MazeDisplay
         //top left
         float x, y;
         float width, height;
+        //Denoting a blocked cell
         bool blocked = false;
+        //Denoting a cell in the maze path
         bool filled = false;
+        //Cell representing the end of the maze
+        bool end = false;
         Pen outline = new Pen(Brushes.Black);
         public MazeCell(int i, int j, float x, float y, float width, float height)
         {
@@ -43,6 +47,11 @@ namespace MazeDisplay
         {
             set { blocked = value; }
         }
+        public bool End
+        {
+            set { end = value; }
+            get { return end; }
+        }
         public void Draw(Graphics g)
         {
             Brush fillColor = Brushes.White;
@@ -52,6 +61,10 @@ namespace MazeDisplay
             } else if (filled)
             {
                 fillColor = Brushes.Red;
+            }
+            else if (end)
+            {
+                fillColor = Brushes.Blue;                
             }
 
             g.FillRectangle(fillColor, new RectangleF(new PointF(x, y), new SizeF(width, height)));
@@ -89,6 +102,5 @@ namespace MazeDisplay
             }
             return false;
         }
-
     }
 }

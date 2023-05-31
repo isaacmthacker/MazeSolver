@@ -16,6 +16,7 @@ namespace MazeDisplay
         int[][] maze;
         List<MazeCell> cells = new List<MazeCell>();
         MazeSolver mazeSolver = new MazeSolver();
+        MazeSolver.Point end;
         public MazeDrawer(int w, int h)
         {
 
@@ -71,6 +72,9 @@ namespace MazeDisplay
             //    maze[i] = new int[mazeH];
             //}
 
+            //Default end point to bottom-right corner of maze
+            end = new MazeSolver.Point(maze.Length - 1, maze[0].Length - 1);
+
             //Needs maze to be defined before calling
             Resize(w, h);
         }
@@ -83,12 +87,11 @@ namespace MazeDisplay
             halfCellWidth = cellWidth / 2.0f;
 
             CreateCells();
-
         }
 
         public void CreateCells()
         {
-            mazeSolver.Solve(maze);
+            mazeSolver.Solve(maze, end);
             cells.Clear();
             for (int i = 0; i < maze.Length; i++)
             {
@@ -98,13 +101,21 @@ namespace MazeDisplay
                     float y = i * cellHeight + halfCellHeight;
                     float x = j * cellWidth + halfCellWidth;
                     MazeCell m = new MazeCell(i, j, x, y, cellWidth, cellHeight);
-                    if (maze[i][j] == 1)
+                    if (end.X == i && end.Y == j)
                     {
-                        m.Blocked = true;
+                        m.End = true;
                     }
-                    if (mazeSolver.PointInPath(i, j))
+                    else
                     {
-                        m.Filled = true;
+                        //Only check if not the end cell
+                        if (maze[i][j] == 1)
+                        {
+                            m.Blocked = true;
+                        }
+                        if (mazeSolver.PointInPath(i, j))
+                        {
+                            m.Filled = true;
+                        }
                     }
                     cells.Add(m);
                 }
@@ -123,15 +134,32 @@ namespace MazeDisplay
             {
                 if (cell.Click(e.X, e.Y))
                 {
-                    if (maze[cell.I][cell.J] == 0)
+                    if (e.Button == MouseButtons.Right)
                     {
-                        maze[cell.I][cell.J] = 1;
+                        //Update maze end cell
+                        maze[cell.I][cell.J] = 0;
+                        end.X = cell.I;
+                        end.Y = cell.J;
                     }
                     else
                     {
-                        maze[cell.I][cell.J] = 0;
+                        //Block or unblock non-end/non-beginning cell
+                        if (maze[cell.I][cell.J] == 0)
+                        {
+                            if (!(cell.I == 0 && cell.J == 0))
+                            {
+                                if (!(end.X == cell.I && end.Y == cell.J))
+                                {
+                                    //Only block if not the end cell or beginning
+                                    maze[cell.I][cell.J] = 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            maze[cell.I][cell.J] = 0;
+                        }
                     }
-
                     return true;
                 }
             }

@@ -168,7 +168,7 @@ namespace MazeDisplay
             }
         }
 
-        public void Solve(int[][] maze)
+        public void Solve(int[][] maze, Point end)
         {
             if(maze.Length == 0 || maze[0].Length == 0)
             {
@@ -218,7 +218,6 @@ namespace MazeDisplay
             Console.WriteLine("Done");
             //t.Print();
 
-            Point end = new Point(mazeWidth - 1, mazeHeight - 1);
             Console.WriteLine("End " + end.ToString());
             if (t.Contains(end))
             {
