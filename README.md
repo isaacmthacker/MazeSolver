@@ -18,3 +18,5 @@ Example of maze updating:
 Example of custom end location:
 
 ![image](https://github.com/isaacmthacker/MazeSolver/assets/16544007/9653e623-3230-4033-9a04-303c477164bd)
+
+Maze file modified from https://gist.github.com/fulutori/bac35c0064bbbc7c7da84e981f425fc6
