@@ -78,6 +78,13 @@ namespace MazeDisplay
             //Needs maze to be defined before calling
             Resize(w, h);
         }
+        
+        public void UpdateMaze(int[][] newMaze)
+        {
+            maze = newMaze;
+            end = new MazeSolver.Point(maze.Length - 1, maze[0].Length - 1);
+        }
+
         public void Resize(int w, int h)
         {
             cellWidth = (float)w / (maze[0].Length + 1);
